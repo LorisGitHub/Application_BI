@@ -93,10 +93,11 @@ def readDataFromCSV(path, verbose):
 
 
 def splitData(data):
-    feature_names_raw = data.columns[1:]
+    feature_names_raw = data.columns[1:19]
     X = data[feature_names_raw]
     Y = data['Id']
-    return (X, Y)
+    C = data['demissionaire']
+    return (X, Y, C)
 
 
 def replaceMissingValues(data):
@@ -106,7 +107,7 @@ def replaceMissingValues(data):
 
 def showAbberantValues(data):
     indexNames = data[data["MTREV"] > 20000].index
-    print(indexNames) # Une suppression des lignes devaient être faite ici mais nous l'avons directement fait dans le fichier csv par manque de temps
+    print(indexNames)
 
 
 def disjonctDataColumn(data, colName, delete):
@@ -194,23 +195,24 @@ def dendrogram(data):
     plt.xlabel('sample index')
     plt.ylabel('distance')
     plt.tight_layout()
-    plt.savefig('fig/hierarchical-clustering')
+    plt.savefig('fig/hierarchical-clustering.svg')
     plt.close()
     
 
 def main():
     plt.ioff()
-    data = readDataFromCSV('data/data_mining_DB_clients_tbl.csv', True)
-    (X, Y) = splitData(data)
+    data = readDataFromCSV('data/fused_files.csv', True)
+    (X, Y, C) = splitData(data)
     X = replaceMissingValues(X)
     showAbberantValues(X)
     disjonctDataColumn(X, "CDSITFAM", True)
     delDataColumns(X, ['DTADH', 'rangadh', 'rangagead', 'rangagedem', 'rangdem', 'agedem', 'DTDEM', 'ANNEE_DEM', 'CDMOTDEM', 'CDDEM'])
     scaledData = scaleDataColumns(X, ['MTREV', 'NBENF', 'CDSEXE', 'CDTMT', 'adh', 'AGEAD', 'CDCATCL'])
-    scaledData.to_csv('cleanedDataMining.csv', index_label="Id")
-    pcaDf = doAcp(scaledData, 6)
-    elbowMethod(pcaDf)
-    #dendrogram(pcaDf) 
+    pcaDf = doAcp(scaledData, 4)
+    # elbowMethod(pcaDf)
+    # dendrogram(pcaDf)
+    scaledData["demissionaire"] = C
+    scaledData.to_csv('data/cleanedDataMining.csv', index_label="Id")
 
 
 if __name__ == "__main__":
