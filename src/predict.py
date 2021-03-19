@@ -16,7 +16,7 @@ from sklearn import metrics
 
 dummycl = DummyClassifier(strategy="most_frequent")
 gmb = GaussianNB()
-dectree = tree.DecisionTreeClassifier()
+dectree = tree.DecisionTreeClassifier(max_depth = 3, random_state = 0)
 logreg = LogisticRegression(solver="liblinear")
 svc = svm.SVC(gamma='scale')
 
@@ -46,19 +46,21 @@ feature_names_raw = data_train.columns[1:20]
 X = data_train[feature_names_raw]
 Y = data_train['demissionaire']
 
-# accuracy_score(lst_classif, lst_classif_names, X, Y)
-# confusion_matrix(lst_classif, lst_classif_names, X, Y)
+accuracy_score(lst_classif, lst_classif_names, X, Y)
+confusion_matrix(lst_classif, lst_classif_names, X, Y)
 
 # Decision Tree
-X_train, X_test, y_train, y_test = train_test_split(X, Y, random_state=0, test_size=0.2)
-fig = plt.figure(num=None, figsize=(10, 8), dpi=300)
-dectree.fit(X_train, y_train)
-tree.plot_tree(dectree,  
-               feature_names=feature_names_raw,  
-               class_names=["True", "False"],  
-               filled=True, rounded=True)
-plt.savefig('fig/decision_tree')
-plt.close(fig)
+# X_train, X_test, y_train, y_test = train_test_split(X, Y, random_state=0, test_size=0.2)
+# dectree.fit(X_train, y_train)
+# dectree.predict(X_test)
+
+# fig = plt.figure(num=None, figsize=(8, 5), dpi=300)
+# tree.plot_tree(dectree,  
+#                feature_names=feature_names_raw,  
+#                class_names=["False","True"],  
+#                filled=True, rounded=True)
+# plt.savefig('fig/decision_tree')
+# plt.close(fig)
 
 
 

@@ -34,55 +34,6 @@ def correlation_circle(df,nb_var,x_axis,y_axis):
     plt.savefig('fig/acp_correlation_circle_axes_'+str(x_axis)+'_'+str(y_axis))
     plt.close(fig)
 
-# acp = PCA(svd_solver='full')
-# acp.fit_transform(dataNormalized)
-
-# n = dataNormalized.shape[0]
-# p = dataNormalized.shape[1]
-
-# eigval = (n-1) / n * acp.explained_variance_
-# sqrt_eigval = np.sqrt(eigval)
-# corvar = np.zeros((p,p))
-
-# for k in range(p):
-# 	corvar[:,k] = acp.components_[k,:] * sqrt_eigval[k]
-
-# correlation_circle(dataNormalized, dataNormalized.shape[1], 0, 1)
-# correlation_circle(dataNormalized, dataNormalized.shape[1], 2, 3)
-
-# Exercice 6
-
-# X_norm = pd.DataFrame(standardScaler.fit_transform(X_median), columns=feature_names)
-
-# Exercice 7
-
-# est = KMeans(n_clusters=8)
-# est.fit(X_norm)
-
-# lst_countries=['FRA', 'MEX', 'BGR']
-# for name in lst_countries:
-#     num_cluster = est.labels_[y.loc[y==name].index][0]
-#     print('Num cluster for ' + name + ' : ' + str(num_cluster))
-#     print('\tlist of lst_countries: ' + ', '.join(y.iloc[np.where(est.labels_==num_cluster)].values))
-#     print('\tcentroid: '+str(est.cluster_centers_[num_cluster]))
-
-# Exercice 8
-
-# lst_labels = list(map(lambda pair: pair[0]+str(pair[1]), zip(y.values,datas.index)))
-# linkage_matrix = linkage(X_norm, 'ward')
-# fig = plt.figure()
-# dendrogram(
-#     linkage_matrix,
-#     color_threshold=0,
-#     labels=lst_labels
-# )
-# plt.title('Hierarchical Clustering Dendrogram (Ward)')
-# plt.xlabel('sample index')
-# plt.ylabel('distance')
-# plt.tight_layout()
-# plt.savefig('../fig/hierarchical-clustering')
-# plt.close()
-
 def readDataFromCSV(path, verbose):
     data = pd.read_csv(path)
     if verbose:
@@ -208,9 +159,9 @@ def main():
     disjonctDataColumn(X, "CDSITFAM", True)
     delDataColumns(X, ['DTADH', 'rangadh', 'rangagead', 'rangagedem', 'rangdem', 'agedem', 'DTDEM', 'ANNEE_DEM', 'CDMOTDEM', 'CDDEM'])
     scaledData = scaleDataColumns(X, ['MTREV', 'NBENF', 'CDSEXE', 'CDTMT', 'adh', 'AGEAD', 'CDCATCL'])
-    pcaDf = doAcp(scaledData, 4)
+    pcaDf = doAcp(scaledData, 10)
     # elbowMethod(pcaDf)
-    # dendrogram(pcaDf)
+    dendrogram(pcaDf)
     scaledData["demissionaire"] = C
     scaledData.to_csv('data/cleanedDataMining.csv', index_label="Id")
 

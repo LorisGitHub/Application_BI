@@ -21,6 +21,10 @@ feature_names_raw_bis = data_bis.columns[1:]
 X_bis = data_bis[feature_names_raw_bis]
 Y_bis = data_bis['Id']
 
+# Drop rows with aberrant values
+X_bis = X_bis[X_bis["DTNAIS"] != "0000-00-00"]
+
+# Create and map missing columns
 X_bis["AGEAD"] = (X_bis["DTADH"].str[0:4]).astype('int64') - (X_bis["DTNAIS"].str[0:4]).astype('int64')
 X_bis["ANNEE_DEM"] = X_bis["DTDEM"].str[0:4]
 
@@ -31,7 +35,6 @@ newDf = pd.concat([X, X_bis], ignore_index=True)
 newDf['adh'] = np.where((np.isnan(newDf['adh'])) & (newDf["ANNEE_DEM"] == '1900'), (now.year - (newDf["DTADH"].str[0:4]).astype('int64')), (newDf["ANNEE_DEM"].astype('int64') - (newDf["DTADH"].str[0:4]).astype('int64')))
 
 # Drop rows with aberrant values
-newDf = newDf[newDf["AGEAD"] < 100]
 newDf = newDf[newDf["MTREV"] < 20000]
 newDf = newDf.drop(newDf[(newDf["ANNEE_DEM"] == '1900') & (pd.isna(newDf['CDMOTDEM']) == False)].index)
 
