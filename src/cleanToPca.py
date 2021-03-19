@@ -159,7 +159,7 @@ def main():
     disjonctDataColumn(X, "CDSITFAM", True)
     delDataColumns(X, ['DTADH', 'rangadh', 'rangagead', 'rangagedem', 'rangdem', 'agedem', 'DTDEM', 'ANNEE_DEM', 'CDMOTDEM', 'CDDEM'])
     scaledData = scaleDataColumns(X, ['MTREV', 'NBENF', 'CDSEXE', 'CDTMT', 'adh', 'AGEAD', 'CDCATCL'])
-    pcaDf = doAcp(scaledData, 10)
+    pcaDf = doAcp(scaledData, 4)
     # elbowMethod(pcaDf)
     dendrogram(pcaDf)
     scaledData["demissionaire"] = C
